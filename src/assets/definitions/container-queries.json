@@ -1,0 +1,27 @@
+{
+  "spec": "https://drafts.csswg.org/css-contain-3/#container-queries",
+  "caniuse": "css-container-queries",
+  "usage_stats": "https://chromestatus.com/metrics/feature/timeline/popularity/4165",
+  "status": {
+    "baseline": "low",
+    "baseline_low_date": "2023-02-14",
+    "support": {
+      "chrome": "105",
+      "chrome_android": "105",
+      "edge": "105",
+      "firefox": "110",
+      "firefox_android": "110",
+      "safari": "16",
+      "safari_ios": "16"
+    }
+  },
+  "compat_features": [
+    "css.at-rules.container",
+    "css.properties.contain",
+    "css.properties.contain.inline-size",
+    "css.properties.contain.style",
+    "css.properties.container",
+    "css.properties.container-name",
+    "css.properties.container-type"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "antfu.unocss",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "redhat.vscode-yaml",
+    "vue.volar",
+    "vue.vscode-typescript-vue-plugin"
+  ]
+}
