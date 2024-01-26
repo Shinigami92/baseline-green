@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Ref } from 'vue';
 import { capitalCase } from 'change-case';
-import { onMounted, ref } from 'vue';
+import type { Ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 interface Definition {
   name: string;
@@ -27,6 +27,20 @@ interface Definition {
 
 const definitions: Ref<Definition[]> = ref([]);
 
+const search = ref('');
+
+const filteredDefinitions = computed(() => {
+  if (!search.value) {
+    return definitions.value;
+  }
+
+  return definitions.value.filter((definition) =>
+    JSON.stringify(definition)
+      .toLowerCase()
+      .includes(search.value.toLowerCase()),
+  );
+});
+
 onMounted(async () => {
   const definitionMap = import.meta.glob('./assets/definitions/*.json', {
     as: 'json',
@@ -49,6 +63,13 @@ onMounted(async () => {
   <main class="m-4">
     <h1 class="text-xl font-bold text-green-700">Baseline Green</h1>
 
+    <input
+      v-model="search"
+      type="search"
+      class="mb-4 mt-2 w-full rounded-md border border-gray-500 p-2"
+      placeholder="Search"
+    />
+
     <table>
       <thead>
         <tr>
@@ -63,7 +84,7 @@ onMounted(async () => {
 
       <tbody>
         <tr
-          v-for="definition in definitions"
+          v-for="definition in filteredDefinitions"
           :key="definition.name"
           class="border-b border-gray-500"
         >
@@ -106,11 +127,45 @@ onMounted(async () => {
                 <thead>
                   <tr>
                     <th
-                      v-for="key in Object.keys(definition.status.support)"
+                      v-for="key in Object.keys(definition.status.support).sort(
+                        (a, b) => {
+                          if (a.includes('_')) return 1;
+                          if (b.includes('_')) return -1;
+                          return 0;
+                        },
+                      )"
                       :key="key"
                       class="whitespace-nowrap p-2"
                     >
-                      {{ capitalCase(key) }}
+                      <span class="write-vertical-left rotate-180">
+                        {{ capitalCase(key) }}
+                      </span>
+                      <div
+                        v-if="key.includes('chrome')"
+                        class="i-mdi-google-chrome bg-black"
+                      />
+                      <div
+                        v-if="key.includes('firefox')"
+                        class="i-mdi-firefox bg-black"
+                      />
+                      <div
+                        v-if="key.includes('safari')"
+                        class="i-mdi-apple-safari bg-black"
+                      />
+                      <div
+                        v-if="key === 'edge'"
+                        class="i-mdi-microsoft-edge bg-black"
+                      />
+                      <div
+                        v-if="!key.includes('_')"
+                        class="i-mdi-monitor bg-black"
+                        title="desktop"
+                      />
+                      <div
+                        v-else
+                        class="i-mdi-cellphone bg-black"
+                        title="mobile"
+                      />
                     </th>
                   </tr>
                 </thead>
@@ -133,13 +188,28 @@ onMounted(async () => {
           </td>
 
           <td>
-            <a
-              v-if="definition.caniuse"
-              :href="'https://caniuse.com/?search=' + definition.caniuse"
-              target="_blank"
-            >
-              {{ definition.caniuse }}
-            </a>
+            <template v-if="Array.isArray(definition.caniuse)">
+              <ul>
+                <li v-for="caniuse in definition.caniuse" :key="caniuse">
+                  <a
+                    v-if="caniuse"
+                    :href="'https://caniuse.com/?search=' + caniuse"
+                    target="_blank"
+                  >
+                    {{ caniuse }}
+                  </a>
+                </li>
+              </ul>
+            </template>
+            <template v-else>
+              <a
+                v-if="definition.caniuse"
+                :href="'https://caniuse.com/?search=' + definition.caniuse"
+                target="_blank"
+              >
+                {{ definition.caniuse }}
+              </a>
+            </template>
           </td>
 
           <td>

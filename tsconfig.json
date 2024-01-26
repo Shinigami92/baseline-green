@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "importHelpers": true,
     "noEmit": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
@@ -15,7 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable", "ScriptHost"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["node"],
     "resolveJsonModule": true,
     "sourceMap": true,
