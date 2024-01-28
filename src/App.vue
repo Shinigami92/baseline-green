@@ -69,179 +69,205 @@ onMounted(async () => {
       placeholder="Search"
     />
 
-    <table>
+    <table class="w-full">
       <thead>
         <tr>
-          <th colspan="3" />
-          <th colspan="4">
+          <th colspan="2" />
+          <th colspan="4" class="border-l border-gray-500">
             <div class="i-mdi-monitor inline-block bg-black" />
           </th>
-          <th colspan="3">
+          <th colspan="3" class="border-l border-gray-500">
             <div class="i-mdi-cellphone inline-block bg-black" />
           </th>
-          <th colspan="3" />
         </tr>
+
         <tr>
           <th class="whitespace-nowrap p-2">Name</th>
-          <th class="whitespace-nowrap p-2">Spec</th>
           <th class="whitespace-nowrap p-2">Status</th>
-          <th class="p-2 align-bottom">
-            <div class="write-vertical-right flex rotate-180 gap-1">
+          <th class="w-12 border-l border-gray-500 p-2 align-bottom">
+            <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
               <div class="i-mdi-google-chrome rotate-180 bg-black" />
               <span>Chrome</span>
             </div>
           </th>
-          <th class="p-2 align-bottom">
-            <div class="write-vertical-right flex rotate-180 gap-1">
+          <th class="w-12 p-2 align-bottom">
+            <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
               <div class="i-mdi-microsoft-edge rotate-180 bg-black" />
               <span>Edge</span>
             </div>
           </th>
-          <th class="p-2 align-bottom">
-            <div class="write-vertical-right flex rotate-180 gap-1">
+          <th class="w-12 p-2 align-bottom">
+            <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
               <div class="i-mdi-firefox rotate-180 bg-black" />
               <span>Firefox</span>
             </div>
           </th>
-          <th class="p-2 align-bottom">
-            <div class="write-vertical-right flex rotate-180 gap-1">
+          <th class="w-12 p-2 align-bottom">
+            <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
               <div class="i-mdi-apple-safari rotate-180 bg-black" />
               <span>Safari</span>
             </div>
           </th>
-          <th class="p-2 align-bottom">
-            <div class="write-vertical-right flex rotate-180 gap-1">
+          <th class="w-12 border-l border-gray-500 p-2 align-bottom">
+            <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
               <div class="i-mdi-google-chrome rotate-180 bg-black" />
-              <span>Chrome Android</span>
+              <span>Chrome</span>
             </div>
           </th>
-          <th class="p-2 align-bottom">
-            <div class="write-vertical-right flex rotate-180 gap-1">
+          <th class="w-12 p-2 align-bottom">
+            <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
               <div class="i-mdi-firefox rotate-180 bg-black" />
               <span>Firefox</span>
             </div>
           </th>
-          <th class="p-2 align-bottom">
-            <div class="write-vertical-right flex rotate-180 gap-1">
+          <th class="w-12 p-2 align-bottom">
+            <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
               <div class="i-mdi-apple-safari rotate-180 bg-black" />
               <span>Safari</span>
             </div>
           </th>
-          <th class="whitespace-nowrap p-2">Caniuse</th>
-          <th class="whitespace-nowrap p-2">Compat Features</th>
-          <th class="whitespace-nowrap p-2">Usage Stats</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr
+        <template
           v-for="definition in filteredDefinitions"
           :key="definition.name"
-          class="border-b border-gray-500"
         >
-          <!-- Name -->
-          <td>{{ definition.name }}</td>
+          <tr>
+            <!-- Name -->
+            <td>{{ definition.name }}</td>
 
-          <!-- Spec -->
-          <td class="flex flex-col">
-            <template v-if="Array.isArray(definition.spec)">
-              <template v-for="spec in definition.spec" :key="spec">
-                <a :href="spec" target="_blank">{{ spec }}</a>
-              </template>
-            </template>
-            <template v-else>
-              <a :href="definition.spec" target="_blank">
-                {{ definition.spec }}
-              </a>
-            </template>
-          </td>
+            <!-- Status -->
+            <td>
+              <div v-if="definition.status" class="flex flex-col p-2">
+                <div class="flex gap-1">
+                  <span class="font-bold">Baseline:</span>
 
-          <!-- Status -->
-          <td>
-            <div v-if="definition.status" class="flex flex-col p-2">
-              <div class="flex gap-1">
-                <span class="font-bold">Baseline:</span>
+                  <span
+                    :class="{
+                      'text-purple-800': definition.status.baseline === false,
+                      'text-green-600': definition.status.baseline === 'high',
+                      'text-green-700': definition.status.baseline === 'low',
+                    }"
+                  >
+                    {{ definition.status.baseline }}
+                  </span>
+                </div>
 
-                <span
-                  :class="{
-                    'text-purple-800': definition.status.baseline === false,
-                    'text-green-600': definition.status.baseline === 'high',
-                    'text-green-700': definition.status.baseline === 'low',
-                  }"
-                >
-                  {{ definition.status.baseline }}
+                <span v-if="definition.status.baseline_low_date">
+                  {{ definition.status.baseline_low_date }}
                 </span>
               </div>
+            </td>
 
-              <span v-if="definition.status.baseline_low_date">
-                {{ definition.status.baseline_low_date }}
-              </span>
-            </div>
-          </td>
+            <!-- Chrome -->
+            <td class="border-l border-gray-500 text-center">
+              {{ definition.status?.support.chrome }}
+            </td>
 
-          <!-- Chrome -->
-          <td>{{ definition.status?.support.chrome }}</td>
+            <!-- Edge -->
+            <td class="text-center">
+              {{ definition.status?.support.edge }}
+            </td>
 
-          <!-- Edge -->
-          <td>{{ definition.status?.support.edge }}</td>
+            <!-- Firefox -->
+            <td class="text-center">
+              {{ definition.status?.support.firefox }}
+            </td>
 
-          <!-- Firefox -->
-          <td>{{ definition.status?.support.firefox }}</td>
+            <!-- Safari -->
+            <td class="text-center">
+              {{ definition.status?.support.safari }}
+            </td>
 
-          <!-- Safari -->
-          <td>{{ definition.status?.support.safari }}</td>
+            <!-- Chrome Android -->
+            <td class="border-l border-gray-500 text-center">
+              {{ definition.status?.support.chrome_android }}
+            </td>
 
-          <!-- Chrome Android -->
-          <td>{{ definition.status?.support.chrome_android }}</td>
+            <!-- Firefox Android -->
+            <td class="text-center">
+              {{ definition.status?.support.firefox_android }}
+            </td>
 
-          <!-- Firefox Android -->
-          <td>{{ definition.status?.support.firefox_android }}</td>
+            <!-- Safari iOS -->
+            <td class="text-center">
+              {{ definition.status?.support.safari_ios }}
+            </td>
+          </tr>
+          <tr class="border-b border-gray-500">
+            <td colspan="2">
+              <!-- Spec -->
+              <div class="flex gap-1">
+                <span class="font-bold">Spec: </span>
+                <div class="flex flex-col">
+                  <template v-if="Array.isArray(definition.spec)">
+                    <template v-for="spec in definition.spec" :key="spec">
+                      <a :href="spec" target="_blank">{{ spec }}</a>
+                    </template>
+                  </template>
+                  <template v-else>
+                    <a :href="definition.spec" target="_blank">
+                      {{ definition.spec }}
+                    </a>
+                  </template>
+                </div>
+              </div>
 
-          <!-- Safari iOS -->
-          <td>{{ definition.status?.support.safari_ios }}</td>
-
-          <!-- Caniuse -->
-          <td>
-            <template v-if="Array.isArray(definition.caniuse)">
-              <ul>
-                <li v-for="caniuse in definition.caniuse" :key="caniuse">
+              <!-- Caniuse -->
+              <div v-if="definition.caniuse" class="flex gap-1">
+                <span class="font-bold">Caniuse: </span>
+                <template v-if="Array.isArray(definition.caniuse)">
+                  <ul>
+                    <li v-for="caniuse in definition.caniuse" :key="caniuse">
+                      <a
+                        v-if="caniuse"
+                        :href="'https://caniuse.com/?search=' + caniuse"
+                        target="_blank"
+                      >
+                        {{ caniuse }}
+                      </a>
+                    </li>
+                  </ul>
+                </template>
+                <template v-else>
                   <a
-                    v-if="caniuse"
-                    :href="'https://caniuse.com/?search=' + caniuse"
+                    v-if="definition.caniuse"
+                    :href="'https://caniuse.com/?search=' + definition.caniuse"
                     target="_blank"
                   >
-                    {{ caniuse }}
+                    {{ definition.caniuse }}
                   </a>
-                </li>
-              </ul>
-            </template>
-            <template v-else>
-              <a
-                v-if="definition.caniuse"
-                :href="'https://caniuse.com/?search=' + definition.caniuse"
-                target="_blank"
-              >
-                {{ definition.caniuse }}
-              </a>
-            </template>
-          </td>
+                </template>
+              </div>
 
-          <!-- Compat Features -->
-          <td>
-            <ul>
-              <li v-for="feature in definition.compat_features" :key="feature">
-                {{ feature }}
-              </li>
-            </ul>
-          </td>
+              <!-- Compat Features -->
+              <div v-if="definition.compat_features" class="flex gap-1">
+                <span class="font-bold">Compat Features: </span>
+                <ul>
+                  <li
+                    v-for="feature in definition.compat_features"
+                    :key="feature"
+                  >
+                    {{ feature }}
+                  </li>
+                </ul>
+              </div>
 
-          <!-- Usage Stats -->
-          <td>
-            <a :href="definition.usage_stats" target="_blank">
-              {{ definition.usage_stats }}
-            </a>
-          </td>
-        </tr>
+              <!-- Usage Stats -->
+              <div v-if="definition.usage_stats" class="flex gap-1">
+                <span class="font-bold">Usage Stats: </span>
+                <a :href="definition.usage_stats" target="_blank">
+                  {{ definition.usage_stats }}
+                </a>
+              </div>
+            </td>
+
+            <td colspan="4" class="border-l border-gray-500" />
+            <td colspan="7" class="border-l border-gray-500" />
+          </tr>
+        </template>
       </tbody>
     </table>
   </main>
