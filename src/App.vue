@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { capitalCase } from 'change-case';
 import type { Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 
@@ -73,9 +72,61 @@ onMounted(async () => {
     <table>
       <thead>
         <tr>
+          <th colspan="3" />
+          <th colspan="4">
+            <div class="i-mdi-monitor inline-block bg-black" />
+          </th>
+          <th colspan="3">
+            <div class="i-mdi-cellphone inline-block bg-black" />
+          </th>
+          <th colspan="3" />
+        </tr>
+        <tr>
           <th class="whitespace-nowrap p-2">Name</th>
           <th class="whitespace-nowrap p-2">Spec</th>
           <th class="whitespace-nowrap p-2">Status</th>
+          <th class="p-2 align-bottom">
+            <div class="write-vertical-right flex rotate-180 gap-1">
+              <div class="i-mdi-google-chrome rotate-180 bg-black" />
+              <span>Chrome</span>
+            </div>
+          </th>
+          <th class="p-2 align-bottom">
+            <div class="write-vertical-right flex rotate-180 gap-1">
+              <div class="i-mdi-microsoft-edge rotate-180 bg-black" />
+              <span>Edge</span>
+            </div>
+          </th>
+          <th class="p-2 align-bottom">
+            <div class="write-vertical-right flex rotate-180 gap-1">
+              <div class="i-mdi-firefox rotate-180 bg-black" />
+              <span>Firefox</span>
+            </div>
+          </th>
+          <th class="p-2 align-bottom">
+            <div class="write-vertical-right flex rotate-180 gap-1">
+              <div class="i-mdi-apple-safari rotate-180 bg-black" />
+              <span>Safari</span>
+            </div>
+          </th>
+          <th class="p-2 align-bottom">
+            <div class="write-vertical-right flex rotate-180 gap-1">
+              <div class="i-mdi-google-chrome rotate-180 bg-black" />
+              <span>Chrome Android</span>
+            </div>
+          </th>
+          <th class="p-2 align-bottom">
+            <div class="write-vertical-right flex rotate-180 gap-1">
+              <div class="i-mdi-firefox rotate-180 bg-black" />
+              <span>Firefox</span>
+            </div>
+          </th>
+          <th class="p-2 align-bottom">
+            <div class="write-vertical-right flex rotate-180 gap-1">
+              <div class="i-mdi-apple-safari rotate-180 bg-black" />
+              <span>Safari</span>
+            </div>
+          </th>
           <th class="whitespace-nowrap p-2">Caniuse</th>
           <th class="whitespace-nowrap p-2">Compat Features</th>
           <th class="whitespace-nowrap p-2">Usage Stats</th>
@@ -88,8 +139,10 @@ onMounted(async () => {
           :key="definition.name"
           class="border-b border-gray-500"
         >
+          <!-- Name -->
           <td>{{ definition.name }}</td>
 
+          <!-- Spec -->
           <td class="flex flex-col">
             <template v-if="Array.isArray(definition.spec)">
               <template v-for="spec in definition.spec" :key="spec">
@@ -103,8 +156,9 @@ onMounted(async () => {
             </template>
           </td>
 
+          <!-- Status -->
           <td>
-            <div v-if="definition.status" class="flex flex-col">
+            <div v-if="definition.status" class="flex flex-col p-2">
               <div class="flex gap-1">
                 <span class="font-bold">Baseline:</span>
 
@@ -117,76 +171,36 @@ onMounted(async () => {
                 >
                   {{ definition.status.baseline }}
                 </span>
-
-                <span v-if="definition.status.baseline_low_date">
-                  {{ definition.status.baseline_low_date }}
-                </span>
               </div>
 
-              <table>
-                <thead>
-                  <tr>
-                    <th
-                      v-for="key in Object.keys(definition.status.support).sort(
-                        (a, b) => {
-                          if (a.includes('_')) return 1;
-                          if (b.includes('_')) return -1;
-                          return 0;
-                        },
-                      )"
-                      :key="key"
-                      class="whitespace-nowrap p-2"
-                    >
-                      <span class="write-vertical-left rotate-180">
-                        {{ capitalCase(key) }}
-                      </span>
-                      <div
-                        v-if="key.includes('chrome')"
-                        class="i-mdi-google-chrome bg-black"
-                      />
-                      <div
-                        v-if="key.includes('firefox')"
-                        class="i-mdi-firefox bg-black"
-                      />
-                      <div
-                        v-if="key.includes('safari')"
-                        class="i-mdi-apple-safari bg-black"
-                      />
-                      <div
-                        v-if="key === 'edge'"
-                        class="i-mdi-microsoft-edge bg-black"
-                      />
-                      <div
-                        v-if="!key.includes('_')"
-                        class="i-mdi-monitor bg-black"
-                        title="desktop"
-                      />
-                      <div
-                        v-else
-                        class="i-mdi-cellphone bg-black"
-                        title="mobile"
-                      />
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <td
-                      v-for="[key, value] in Object.entries(
-                        definition.status.support,
-                      )"
-                      :key="key"
-                      class="text-center"
-                    >
-                      {{ value }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <span v-if="definition.status.baseline_low_date">
+                {{ definition.status.baseline_low_date }}
+              </span>
             </div>
           </td>
 
+          <!-- Chrome -->
+          <td>{{ definition.status?.support.chrome }}</td>
+
+          <!-- Edge -->
+          <td>{{ definition.status?.support.edge }}</td>
+
+          <!-- Firefox -->
+          <td>{{ definition.status?.support.firefox }}</td>
+
+          <!-- Safari -->
+          <td>{{ definition.status?.support.safari }}</td>
+
+          <!-- Chrome Android -->
+          <td>{{ definition.status?.support.chrome_android }}</td>
+
+          <!-- Firefox Android -->
+          <td>{{ definition.status?.support.firefox_android }}</td>
+
+          <!-- Safari iOS -->
+          <td>{{ definition.status?.support.safari_ios }}</td>
+
+          <!-- Caniuse -->
           <td>
             <template v-if="Array.isArray(definition.caniuse)">
               <ul>
@@ -212,6 +226,7 @@ onMounted(async () => {
             </template>
           </td>
 
+          <!-- Compat Features -->
           <td>
             <ul>
               <li v-for="feature in definition.compat_features" :key="feature">
@@ -220,6 +235,7 @@ onMounted(async () => {
             </ul>
           </td>
 
+          <!-- Usage Stats -->
           <td>
             <a :href="definition.usage_stats" target="_blank">
               {{ definition.usage_stats }}
