@@ -69,60 +69,60 @@ onMounted(async () => {
       placeholder="Search"
     />
 
-    <table class="w-full">
-      <thead>
+    <table class="w-full border-separate border-spacing-0">
+      <thead class="sticky top-0 bg-white">
         <tr>
           <th colspan="2" />
           <th colspan="4" class="border-l border-gray-500">
-            <div class="i-mdi-monitor inline-block bg-black" />
+            <div class="i-mdi-monitor inline-block" />
           </th>
           <th colspan="3" class="border-l border-gray-500">
-            <div class="i-mdi-cellphone inline-block bg-black" />
+            <div class="i-mdi-cellphone inline-block" />
           </th>
         </tr>
 
         <tr>
-          <th class="whitespace-nowrap p-2">Name</th>
-          <th class="whitespace-nowrap p-2">Status</th>
-          <th class="w-12 border-l border-gray-500 p-2 align-bottom">
+          <th class="whitespace-nowrap border-b border-gray-500 p-2">Name</th>
+          <th class="whitespace-nowrap border-b border-gray-500 p-2">Status</th>
+          <th class="w-12 border-b border-l border-gray-500 p-2 align-bottom">
             <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
-              <div class="i-mdi-google-chrome rotate-180 bg-black" />
+              <div class="i-mdi-google-chrome rotate-180" />
               <span>Chrome</span>
             </div>
           </th>
-          <th class="w-12 p-2 align-bottom">
+          <th class="w-12 border-b border-gray-500 p-2 align-bottom">
             <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
-              <div class="i-mdi-microsoft-edge rotate-180 bg-black" />
+              <div class="i-mdi-microsoft-edge rotate-180" />
               <span>Edge</span>
             </div>
           </th>
-          <th class="w-12 p-2 align-bottom">
+          <th class="w-12 border-b border-gray-500 p-2 align-bottom">
             <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
-              <div class="i-mdi-firefox rotate-180 bg-black" />
+              <div class="i-mdi-firefox rotate-180" />
               <span>Firefox</span>
             </div>
           </th>
-          <th class="w-12 p-2 align-bottom">
+          <th class="w-12 border-b border-gray-500 p-2 align-bottom">
             <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
-              <div class="i-mdi-apple-safari rotate-180 bg-black" />
+              <div class="i-mdi-apple-safari rotate-180" />
               <span>Safari</span>
             </div>
           </th>
-          <th class="w-12 border-l border-gray-500 p-2 align-bottom">
+          <th class="w-12 border-b border-l border-gray-500 p-2 align-bottom">
             <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
-              <div class="i-mdi-google-chrome rotate-180 bg-black" />
+              <div class="i-mdi-google-chrome rotate-180" />
               <span>Chrome</span>
             </div>
           </th>
-          <th class="w-12 p-2 align-bottom">
+          <th class="w-12 border-b border-gray-500 p-2 align-bottom">
             <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
-              <div class="i-mdi-firefox rotate-180 bg-black" />
+              <div class="i-mdi-firefox rotate-180" />
               <span>Firefox</span>
             </div>
           </th>
-          <th class="w-12 p-2 align-bottom">
+          <th class="w-12 border-b border-gray-500 p-2 align-bottom">
             <div class="write-vertical-right flex inline-flex rotate-180 gap-1">
-              <div class="i-mdi-apple-safari rotate-180 bg-black" />
+              <div class="i-mdi-apple-safari rotate-180" />
               <span>Safari</span>
             </div>
           </th>
@@ -196,8 +196,8 @@ onMounted(async () => {
               {{ definition.status?.support.safari_ios }}
             </td>
           </tr>
-          <tr class="border-b border-gray-500">
-            <td colspan="2">
+          <tr>
+            <td colspan="2" class="border-b border-gray-500">
               <!-- Spec -->
               <div class="flex gap-1">
                 <span class="font-bold">Spec: </span>
@@ -264,8 +264,8 @@ onMounted(async () => {
               </div>
             </td>
 
-            <td colspan="4" class="border-l border-gray-500" />
-            <td colspan="7" class="border-l border-gray-500" />
+            <td colspan="4" class="border-b border-l border-gray-500" />
+            <td colspan="7" class="border-b border-l border-gray-500" />
           </tr>
         </template>
       </tbody>

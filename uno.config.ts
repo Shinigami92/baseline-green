@@ -7,7 +7,6 @@ export default defineConfig({
     presetUno(),
     presetIcons({
       extraProperties: {
-        color: '#ffffff',
         'font-size': '1.5rem',
       },
     }),
