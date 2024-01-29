@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import MdnLink from '@/components/MdnLink.vue';
+import MdnThemeSwitch from '@/components/MdnThemeSwitch.vue';
 import type { Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 
@@ -60,7 +62,13 @@ onMounted(async () => {
 
 <template>
   <main class="m-4">
-    <h1 class="text-xl font-bold text-green-700">Baseline Green</h1>
+    <div class="flex justify-between">
+      <h1 class="text-xl font-bold text-green-700 dark:text-green-600">
+        Baseline Green
+      </h1>
+
+      <MdnThemeSwitch />
+    </div>
 
     <input
       v-model="search"
@@ -70,7 +78,7 @@ onMounted(async () => {
     />
 
     <table class="w-full border-separate border-spacing-0">
-      <thead class="sticky top-0 bg-white">
+      <thead class="sticky top-0 bg-white dark:bg-gray-900">
         <tr>
           <th colspan="2" />
           <th colspan="4" class="border-l border-gray-500">
@@ -146,9 +154,12 @@ onMounted(async () => {
 
                   <span
                     :class="{
-                      'text-purple-800': definition.status.baseline === false,
-                      'text-green-600': definition.status.baseline === 'high',
-                      'text-green-700': definition.status.baseline === 'low',
+                      'text-purple-600 dark:text-purple-400':
+                        definition.status.baseline === false,
+                      'text-green-600 dark:text-green-400':
+                        definition.status.baseline === 'high',
+                      'text-green-700 dark:text-green-300':
+                        definition.status.baseline === 'low',
                     }"
                   >
                     {{ definition.status.baseline }}
@@ -204,13 +215,15 @@ onMounted(async () => {
                 <div class="flex flex-col">
                   <template v-if="Array.isArray(definition.spec)">
                     <template v-for="spec in definition.spec" :key="spec">
-                      <a :href="spec" target="_blank">{{ spec }}</a>
+                      <MdnLink :href="spec">
+                        {{ spec }}
+                      </MdnLink>
                     </template>
                   </template>
                   <template v-else>
-                    <a :href="definition.spec" target="_blank">
+                    <MdnLink :href="definition.spec">
                       {{ definition.spec }}
-                    </a>
+                    </MdnLink>
                   </template>
                 </div>
               </div>
@@ -221,24 +234,22 @@ onMounted(async () => {
                 <template v-if="Array.isArray(definition.caniuse)">
                   <ul>
                     <li v-for="caniuse in definition.caniuse" :key="caniuse">
-                      <a
+                      <MdnLink
                         v-if="caniuse"
                         :href="'https://caniuse.com/?search=' + caniuse"
-                        target="_blank"
                       >
                         {{ caniuse }}
-                      </a>
+                      </MdnLink>
                     </li>
                   </ul>
                 </template>
                 <template v-else>
-                  <a
+                  <MdnLink
                     v-if="definition.caniuse"
                     :href="'https://caniuse.com/?search=' + definition.caniuse"
-                    target="_blank"
                   >
                     {{ definition.caniuse }}
-                  </a>
+                  </MdnLink>
                 </template>
               </div>
 
@@ -258,9 +269,9 @@ onMounted(async () => {
               <!-- Usage Stats -->
               <div v-if="definition.usage_stats" class="flex gap-1">
                 <span class="font-bold">Usage Stats: </span>
-                <a :href="definition.usage_stats" target="_blank">
+                <MdnLink :href="definition.usage_stats">
                   {{ definition.usage_stats }}
-                </a>
+                </MdnLink>
               </div>
             </td>
 
@@ -290,5 +301,10 @@ body {
     'Open Sans',
     'Helvetica Neue',
     sans-serif;
+
+  .dark & {
+    background-color: #1b1b1b;
+    color: #ffffff;
+  }
 }
 </style>
