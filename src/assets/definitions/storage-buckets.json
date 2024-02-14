@@ -1,0 +1,12 @@
+{
+  "name": "Storage buckets",
+  "spec": "https://wicg.github.io/storage-buckets/",
+  "status": {
+    "baseline": false,
+    "support": {
+      "chrome": "122",
+      "chrome_android": "122",
+      "edge": "122"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 {
+  "name": "Shadow DOM",
   "spec": "https://dom.spec.whatwg.org/#shadow-trees",
   "caniuse": "shadowdomv1",
   "status": {

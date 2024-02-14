@@ -1,4 +1,5 @@
 {
+  "name": "structuredClone()",
   "spec": "https://html.spec.whatwg.org/multipage/structured-data.html#structured-cloning",
   "status": {
     "baseline": "low",

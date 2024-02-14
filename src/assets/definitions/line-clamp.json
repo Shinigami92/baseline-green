@@ -1,4 +1,5 @@
 {
+  "name": "line-clamp",
   "spec": "https://drafts.csswg.org/css-overflow-3/#line-clamp",
   "caniuse": "css-line-clamp",
   "compat_features": ["css.properties.-webkit-line-clamp"]

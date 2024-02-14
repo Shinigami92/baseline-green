@@ -1,4 +1,5 @@
 {
+  "name": "Custom properties",
   "spec": "https://drafts.csswg.org/css-variables-1/",
   "caniuse": "css-variables",
   "status": {

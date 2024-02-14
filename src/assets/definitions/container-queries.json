@@ -1,4 +1,5 @@
 {
+  "name": "Container queries",
   "spec": "https://drafts.csswg.org/css-contain-3/#container-queries",
   "caniuse": "css-container-queries",
   "usage_stats": "https://chromestatus.com/metrics/feature/timeline/popularity/4165",
@@ -22,6 +23,7 @@
     "css.properties.contain.style",
     "css.properties.container",
     "css.properties.container-name",
-    "css.properties.container-type"
+    "css.properties.container-type",
+    "css.types.length.container_query_length_units"
   ]
 }

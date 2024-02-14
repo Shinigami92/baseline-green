@@ -1,4 +1,5 @@
 {
+  "name": "Fullscreen API",
   "spec": "https://fullscreen.spec.whatwg.org/",
   "caniuse": "fullscreen",
   "compat_features": [

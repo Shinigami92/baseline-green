@@ -1,4 +1,5 @@
 {
+  "name": "Document picture-in-picture",
   "spec": "https://wicg.github.io/document-picture-in-picture/",
   "usage_stats": "https://chromestatus.com/metrics/feature/timeline/popularity/4397"
 }

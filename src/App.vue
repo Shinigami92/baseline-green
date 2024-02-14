@@ -6,6 +6,7 @@ import { computed, onMounted, ref } from 'vue';
 
 interface Definition {
   name: string;
+  description?: string;
   spec: string | string[];
   status?: {
     baseline: false | 'low' | 'high';
@@ -209,6 +210,12 @@ onMounted(async () => {
           </tr>
           <tr>
             <td colspan="2" class="border-b border-gray-500">
+              <!-- Description -->
+              <div v-if="definition.description" class="flex gap-1">
+                <span class="font-bold">Description: </span>
+                <span>{{ definition.description }}</span>
+              </div>
+
               <!-- Spec -->
               <div class="flex gap-1">
                 <span class="font-bold">Spec: </span>
