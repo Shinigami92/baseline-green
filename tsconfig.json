@@ -20,10 +20,10 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["src/*"]
     },
     // There are issues in @unocss/preset-icons
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["node_modules", "dist"]
 }
