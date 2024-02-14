@@ -74,7 +74,7 @@ onMounted(async () => {
     <input
       v-model="search"
       type="search"
-      class="mb-4 mt-2 w-full rounded-md border border-gray-500 p-2"
+      class="mb-4 mt-2 w-full rounded-md border border-gray-500 p-2 text-black"
       placeholder="Search"
     />
 
