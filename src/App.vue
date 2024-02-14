@@ -44,7 +44,7 @@ const filteredDefinitions = computed(() => {
 
 onMounted(async () => {
   const definitionMap = import.meta.glob('./assets/definitions/*.json', {
-    as: 'json',
+    query: '?json',
   });
 
   for (const definition in definitionMap) {
