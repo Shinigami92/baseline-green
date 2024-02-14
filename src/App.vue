@@ -4,12 +4,14 @@ import MdnThemeSwitch from '@/components/MdnThemeSwitch.vue';
 import type { Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 
+type BaselineStatus = 'high' | 'low' | false;
+
 interface Definition {
   name: string;
   description?: string;
   spec: string | string[];
   status?: {
-    baseline: false | 'low' | 'high';
+    baseline: BaselineStatus;
     baseline_low_date?: string;
     support: {
       chrome?: string;
@@ -31,17 +33,60 @@ const definitions: Ref<Definition[]> = ref([]);
 
 const search = ref('');
 
+const filterBaselineStatus: Ref<Array<BaselineStatus | undefined>> = ref([
+  'high',
+  'low',
+  false,
+  undefined,
+]);
+
 const filteredDefinitions = computed(() => {
-  if (!search.value) {
-    return definitions.value;
+  let result = definitions.value;
+
+  if (!filterBaselineStatus.value.includes('high')) {
+    result = result.filter(
+      (definition) => definition.status?.baseline !== 'high',
+    );
   }
 
-  return definitions.value.filter((definition) =>
+  if (!filterBaselineStatus.value.includes('low')) {
+    result = result.filter(
+      (definition) => definition.status?.baseline !== 'low',
+    );
+  }
+
+  if (!filterBaselineStatus.value.includes(false)) {
+    result = result.filter(
+      (definition) => definition.status?.baseline !== false,
+    );
+  }
+
+  if (!filterBaselineStatus.value.includes(undefined)) {
+    result = result.filter(
+      (definition) => definition.status?.baseline !== undefined,
+    );
+  }
+
+  if (!search.value) {
+    return result;
+  }
+
+  return result.filter((definition) =>
     JSON.stringify(definition)
       .toLowerCase()
       .includes(search.value.toLowerCase()),
   );
 });
+
+function toggleFilterBaselineStatus(value: BaselineStatus | undefined): void {
+  if (filterBaselineStatus.value.includes(value)) {
+    filterBaselineStatus.value = filterBaselineStatus.value.filter(
+      (status) => status !== value,
+    );
+  } else {
+    filterBaselineStatus.value.push(value);
+  }
+}
 
 onMounted(async () => {
   const definitionMap = import.meta.glob('./assets/definitions/*.json', {
@@ -71,12 +116,64 @@ onMounted(async () => {
       <MdnThemeSwitch />
     </div>
 
-    <input
-      v-model="search"
-      type="search"
-      class="mb-4 mt-2 w-full rounded-md border border-gray-500 p-2 text-black"
-      placeholder="Search"
-    />
+    <div class="flex items-baseline gap-4">
+      <fieldset class="whitespace-nowrap">
+        <legend class="font-bold">Baseline Status:</legend>
+
+        <div class="flex flex-col px-2">
+          <div class="flex gap-1">
+            <input
+              id="radioBaselineHigh"
+              type="checkbox"
+              value="high"
+              :checked="filterBaselineStatus.includes('high')"
+              @click="toggleFilterBaselineStatus('high')"
+            />
+            <label for="radioBaselineHigh">high</label>
+          </div>
+
+          <div class="flex gap-1">
+            <input
+              id="radioBaselineLow"
+              type="checkbox"
+              value="low"
+              :checked="filterBaselineStatus.includes('low')"
+              @click="toggleFilterBaselineStatus('low')"
+            />
+            <label for="radioBaselineLow">low</label>
+          </div>
+
+          <div class="flex gap-1">
+            <input
+              id="radioBaselineFalse"
+              type="checkbox"
+              :value="false"
+              :checked="filterBaselineStatus.includes(false)"
+              @click="toggleFilterBaselineStatus(false)"
+            />
+            <label for="radioBaselineFalse">false</label>
+          </div>
+
+          <div class="flex gap-1">
+            <input
+              id="radioBaselineUndefined"
+              type="checkbox"
+              :value="undefined"
+              :checked="filterBaselineStatus.includes(undefined)"
+              @click="toggleFilterBaselineStatus(undefined)"
+            />
+            <label for="radioBaselineUndefined">undefined</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <input
+        v-model="search"
+        type="search"
+        class="mb-4 mt-2 w-full rounded-md border border-gray-500 p-2 text-black"
+        placeholder="Search"
+      />
+    </div>
 
     <table class="w-full border-separate border-spacing-0">
       <thead class="sticky top-0 bg-white dark:bg-gray-900">
