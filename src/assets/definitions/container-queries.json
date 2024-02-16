@@ -17,6 +17,9 @@
     }
   },
   "compat_features": [
+    "api.CSSContainerRule",
+    "api.CSSContainerRule.containerName",
+    "api.CSSContainerRule.containerQuery",
     "css.at-rules.container",
     "css.properties.contain",
     "css.properties.contain.inline-size",

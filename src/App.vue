@@ -10,6 +10,7 @@ interface Definition {
   name: string;
   description?: string;
   spec: string | string[];
+  snapshot?: string;
   status?: {
     baseline: BaselineStatus;
     baseline_low_date?: string;
