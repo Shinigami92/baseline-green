@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import MdnLink from '@/components/MdnLink.vue';
 import MdnThemeSwitch from '@/components/MdnThemeSwitch.vue';
+import { useUrlSearchParams } from '@vueuse/core';
 import type { Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 
@@ -32,61 +33,60 @@ interface Definition {
 
 const definitions: Ref<Definition[]> = ref([]);
 
-const search = ref('');
-
-const filterBaselineStatus: Ref<Array<BaselineStatus | undefined>> = ref([
-  'high',
-  'low',
-  false,
-  undefined,
-]);
+const params = useUrlSearchParams('history', {
+  initialValue: {
+    search: '',
+    baselineStatus: 'high,low,false,undefined',
+  },
+});
 
 const filteredDefinitions = computed(() => {
   let result = definitions.value;
 
-  if (!filterBaselineStatus.value.includes('high')) {
+  if (!params.baselineStatus.includes('high')) {
     result = result.filter(
       (definition) => definition.status?.baseline !== 'high',
     );
   }
 
-  if (!filterBaselineStatus.value.includes('low')) {
+  if (!params.baselineStatus.includes('low')) {
     result = result.filter(
       (definition) => definition.status?.baseline !== 'low',
     );
   }
 
-  if (!filterBaselineStatus.value.includes(false)) {
+  if (!params.baselineStatus.includes('false')) {
     result = result.filter(
       (definition) => definition.status?.baseline !== false,
     );
   }
 
-  if (!filterBaselineStatus.value.includes(undefined)) {
+  if (!params.baselineStatus.includes('undefined')) {
     result = result.filter(
       (definition) => definition.status?.baseline !== undefined,
     );
   }
 
-  if (!search.value) {
+  if (!params.search) {
     return result;
   }
 
   return result.filter((definition) =>
     JSON.stringify(definition)
       .toLowerCase()
-      .includes(search.value.toLowerCase()),
+      .includes(params.search.toLowerCase()),
   );
 });
 
-function toggleFilterBaselineStatus(value: BaselineStatus | undefined): void {
-  if (filterBaselineStatus.value.includes(value)) {
-    filterBaselineStatus.value = filterBaselineStatus.value.filter(
-      (status) => status !== value,
-    );
-  } else {
-    filterBaselineStatus.value.push(value);
-  }
+function toggleFilterBaselineStatus(
+  value: BaselineStatus | 'false' | 'undefined',
+): void {
+  params.baselineStatus = params.baselineStatus.includes(`${value}`)
+    ? params.baselineStatus
+        .split(',')
+        .filter((status) => status !== value)
+        .join(',')
+    : `${params.baselineStatus},${value}`;
 }
 
 onMounted(async () => {
@@ -127,7 +127,7 @@ onMounted(async () => {
               id="radioBaselineHigh"
               type="checkbox"
               value="high"
-              :checked="filterBaselineStatus.includes('high')"
+              :checked="params.baselineStatus.includes('high')"
               @click="toggleFilterBaselineStatus('high')"
             />
             <label for="radioBaselineHigh">high</label>
@@ -138,7 +138,7 @@ onMounted(async () => {
               id="radioBaselineLow"
               type="checkbox"
               value="low"
-              :checked="filterBaselineStatus.includes('low')"
+              :checked="params.baselineStatus.includes('low')"
               @click="toggleFilterBaselineStatus('low')"
             />
             <label for="radioBaselineLow">low</label>
@@ -149,8 +149,8 @@ onMounted(async () => {
               id="radioBaselineFalse"
               type="checkbox"
               :value="false"
-              :checked="filterBaselineStatus.includes(false)"
-              @click="toggleFilterBaselineStatus(false)"
+              :checked="params.baselineStatus.includes('false')"
+              @click="toggleFilterBaselineStatus('false')"
             />
             <label for="radioBaselineFalse">false</label>
           </div>
@@ -160,8 +160,8 @@ onMounted(async () => {
               id="radioBaselineUndefined"
               type="checkbox"
               :value="undefined"
-              :checked="filterBaselineStatus.includes(undefined)"
-              @click="toggleFilterBaselineStatus(undefined)"
+              :checked="params.baselineStatus.includes('undefined')"
+              @click="toggleFilterBaselineStatus('undefined')"
             />
             <label for="radioBaselineUndefined">undefined</label>
           </div>
@@ -169,7 +169,7 @@ onMounted(async () => {
       </fieldset>
 
       <input
-        v-model="search"
+        v-model="params.search"
         type="search"
         class="mb-4 mt-2 w-full rounded-md border border-gray-500 p-2 text-black"
         placeholder="Search"
